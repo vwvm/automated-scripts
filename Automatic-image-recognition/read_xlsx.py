@@ -63,13 +63,14 @@ if __name__ == "__main__":
                     ws.cell(row=row, column=11).value = mat.group()
                     print("准确率" + str(i[2]))
                     ws.cell(row=row, column=12).value = "准确率" + str(i[2])
-
+                    sign = True
                     wb.save("test2.xlsx")
                     break
 
 
         # 序列
-        ws.cell(row=row, column=10, value="匹配失败：图片时间不对").fill = fills
+        if sign is False:
+            ws.cell(row=row, column=10, value="匹配失败：图片时间不对").fill = fills
 
         print()
         print()
