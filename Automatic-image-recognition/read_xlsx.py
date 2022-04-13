@@ -1,6 +1,5 @@
 import openpyxl
 from PIL import Image
-import easyocr
 import easyocr.model.vgg_model
 import numpy as np
 import re
@@ -8,11 +7,16 @@ import datetime
 import time
 
 # 找不到修改easyocr的源码
+from openpyxl.styles import PatternFill
 
 reader = easyocr.Reader(['ch_sim'], model_storage_directory="./", download_enabled=False, gpu=False, base_directory="./")
 
 if __name__ == "__main__":
 
+    # 匹配失败颜色
+    Color = ['ffc7ce', '9c0006']
+    # 设置填充颜色
+    fills = PatternFill('solid', fgColor=Color[0])
     dates = [str, str, str, str, str, str, str]
 
     wb = openpyxl.load_workbook('./test2.xlsx')
@@ -42,6 +46,8 @@ if __name__ == "__main__":
         img = Image.open(image.ref).convert("RGB")
         img = np.array(img)
 
+        sign = False
+
         print(ws.cell(row=row, column=3).value)
         # 读取图像
         result = reader.readtext(img)
@@ -53,12 +59,24 @@ if __name__ == "__main__":
                 if mat.group() in dates:
                     print(mat.group() + " 匹配成功")
                     ws.cell(row=row, column=10).value = "匹配成功"
+
                     ws.cell(row=row, column=11).value = mat.group()
                     print("准确率" + str(i[2]))
                     ws.cell(row=row, column=12).value = "准确率" + str(i[2])
+
                     break
+
+
+        # 序列
+        ws.cell(row=row, column=10, value="匹配失败：图片时间不对").fill = fills
 
         print()
         print()
         print()
+
+    for i in range(1, ws.max_row):
+        if ws.cell(row=i, column=6).value == "是":
+            if ws.cell(row=i, column=10).value is None:
+                ws.cell(row=i, column=10, value="匹配失败：,没有图片").fill = fills
+
     wb.save("test2.xlsx")
