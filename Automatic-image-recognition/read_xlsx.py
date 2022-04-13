@@ -64,6 +64,7 @@ if __name__ == "__main__":
                     print("准确率" + str(i[2]))
                     ws.cell(row=row, column=12).value = "准确率" + str(i[2])
 
+                    wb.save("test2.xlsx")
                     break
 
 
