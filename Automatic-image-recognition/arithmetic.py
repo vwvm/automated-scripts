@@ -96,7 +96,7 @@ class Arithmetic(object):
 
         name_matching = False
         date_matching = False
-        negative_matching = False
+        negative_matching = True
         date = ""
         name = ""
         accuracy_rate = 1.0
@@ -112,10 +112,9 @@ class Arithmetic(object):
                 name_matching = True
 
             # 匹配阴性
-            mat = re.search(r"[阴性]", i[1])
-            if mat is not None:
-                negative = mat.group()
-                negative_matching = True
+            if i[1] == "阳性":
+                negative = i[1]
+                negative_matching = False
 
             # 匹配日期
             mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})", i[1])
