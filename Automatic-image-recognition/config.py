@@ -1,7 +1,7 @@
 from openpyxl.styles import PatternFill
 
 date = "2022-04-13"
-version = "1.0.2"
+version = "1.0.3"
 file_dir = "./"
 name_column = 3
 dates = [str, str, str, str, str, str, str]
