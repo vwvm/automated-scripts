@@ -8,6 +8,38 @@ key_input = Controller()
 
 def on_press():
     for i in range(21):
+        key_input.press("s")
+        sleep(0.3)
+        key_input.release("s")
+        sleep(0.1)
+        key_input.press("a")
+        sleep(0.1)
+        key_input.release("a")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+        key_input.press("d")
+        sleep(0.1)
+        key_input.release("d")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+    # 向下收完之后
+    key_input.press("s")
+    sleep(0.3)
+    key_input.release("s")
+    sleep(0.1)
+    for i in range(21):
+        key_input.press("d")
+        sleep(0.3)
+        key_input.release("d")
+        sleep(0.1)
+    # 右到头
+    for i in range(21):
         key_input.press("w")
         sleep(0.3)
         key_input.release("w")
@@ -45,7 +77,11 @@ def on_press():
     sleep(0.3)
     key_input.release("w")
     sleep(0.1)
-    #开始加油
+    key_input.press("a")
+    sleep(0.3)
+    key_input.release("a")
+    sleep(0.1)
+    # 开始加油
     for i in range(30):
         key_input.press("d")
         sleep(0.3)
