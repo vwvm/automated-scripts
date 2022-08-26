@@ -13,19 +13,19 @@ mouse_input = mouse.Controller()
 mouse_button = mouse.Button
 
 
-def script_start(running):
+def script_start(running, this_dict):
     """
     前后移动挂机
     """
-    for j in range(15):
+    for j in range(this_dict.get("count")):
         key_input.press("w")
-        sleep(10)
+        sleep(this_dict.get("move_up"))
         if not running.is_set():
             return
         key_input.release("w")
         sleep(0.1)
         key_input.press("s")
-        sleep(10)
+        sleep(this_dict.get("move_down"))
         if not running.is_set():
             return
         key_input.release("s")
@@ -33,17 +33,17 @@ def script_start(running):
         key_input.press("c")
         sleep(0.3)
         key_input.release("c")
-        sleep(10)
+        sleep(this_dict.get("休息几秒"))
         if not running.is_set():
             return
         key_input.press("c")
         sleep(0.3)
         key_input.release("c")
         sleep(0.1)
-    feed(running)
+    feed(running, this_dict)
 
 
-def mouse_press(running):
+def mouse_press(running, this_dict):
     if not running.is_set():
         return
     sleep(1)
@@ -58,7 +58,7 @@ def mouse_press(running):
     for i in range(20):
         mouse_input.move(-100, -100)
         sleep(0.1)
-    mouse_input.move(450, 250)
+    mouse_input.move(this_dict.get("x"), this_dict.get("y"))
     sleep(0.1)
     mouse_input.press(mouse_button.right)
     sleep(0.1)
@@ -76,26 +76,28 @@ def mouse_press(running):
     sleep(0.1)
 
 
-def feed(running):
+def feed(running, this_dict):
     """
     吃东西
     """
-    key_input.press("4")
+    key_input.press(str(this_dict.get("eat")))
     sleep(0.1)
-    key_input.release("4")
+    key_input.release(str(this_dict.get("eat")))
     sleep(9)
     if not running.is_set():
         return
-    key_input.press("3")
+    key_input.press(str(this_dict.get("water")))
     sleep(0.1)
-    key_input.release("3")
+    key_input.release(str(this_dict.get("water")))
     sleep(9)
     if not running.is_set():
         return
-    mouse_press(running)
+    mouse_press(running, this_dict)
 
 
 class Main(threading.Thread):
+    this_dict = {}
+
     def __init__(self, *args, **kwargs):
         super(Main, self).__init__(*args, **kwargs)
         self.__flag = threading.Event()  # 用于暂停线程的标识
@@ -106,7 +108,7 @@ class Main(threading.Thread):
     def run(self):
         while self.__running.isSet():
             self.__flag.wait()  # 为True时立即返回, 为False时阻塞直到内部的标识位为True后返回
-            script_start(self.__running)
+            script_start(self.__running, this_dict)
 
     def pause(self):
         self.__flag.clear()  # 设置为False, 让线程阻塞
@@ -119,19 +121,18 @@ class Main(threading.Thread):
         self.__running.clear()  # 设置为False
 
 
-def explain():
-    print("是否取消系统所有定时关机（y/n）")
-    if input() == 'y':
+def explain(is_down=1, shutdown=0):
+    if is_down:
         os.system("shutdown /a")
-    if input("是否定时关机（y/n）\n") == 'y':
-        print("请输入多少秒后定时关机（单位秒）")
-        os.system("shutdown /s /t " + input())
+    if shutdown:
+        os.system("shutdown /s /t " + str(shutdown))
 
 
-def key_event():
+def key_event(this_dict):
     with keyboard.Events() as events:
         print("按'-'启动脚本")
         p = Main()
+        p.this_dict = this_dict
         is_right = 0
         down_right = 0
         for event in events:
@@ -161,22 +162,21 @@ def read_config():
     config = configparser.ConfigParser()
     # -read读取ini文件
     config.read('config.ini', encoding='UTF-8')
+    config_str = ['count', "move_up", "move_down", "休息几秒", "eat", "water", "x", "y", "sum", "shutdown", "is"]
 
-    # -get(section,option)得到section中option的值，返回为string类型
-    userName = config.get('move_config', 'userName')
-    password = config.get('move_config', 'password')
-    operator = config.get('move_config', 'operator')
+    config_dict = {i: int(config.get('move_config', i)) for i in config_str}
+    return config_dict
 
 
 if __name__ == '__main__':
-    # threading.Thread(target=explain).start()
-    # threading.Thread(target=key_event).start()
-    explain()
-    key_event()
+    this_dict = read_config()
+    print(this_dict)
+    explain(this_dict.get("is"), this_dict.get("shutdown"))
+    key_event(this_dict)
     t = 1
     while t:
         p = input("脚本已经停止，是否重新运行（y/n）")
         if p == 'n':
             break
         if p == 'y':
-            key_event()
+            key_event(this_dict)
