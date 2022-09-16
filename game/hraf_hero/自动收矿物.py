@@ -133,11 +133,16 @@ def on_release(key):
         return False
 
 
-with keyboard.Events() as events:
-    for event in events:
-        if event.key == keyboard.KeyCode.from_char('-'):
-            print("hh")
-            on_press()
-            break
-        else:
-            print('Received event {}'.format(event))
+temp = 1
+while temp:
+    with keyboard.Events() as events:
+        for event in events:
+            if event.key == keyboard.KeyCode.from_char('-'):
+                print("hh")
+                on_press()
+            if event.key == keyboard.KeyCode.from_char('='):
+                print("结束")
+                temp = 0
+                on_press()
+            else:
+                print('Received event {}'.format(event))
