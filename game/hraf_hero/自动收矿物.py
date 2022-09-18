@@ -6,11 +6,12 @@ from pynput.keyboard import Controller, Key
 key_input = Controller()
 
 
-def on_press():
-    for i in range(21):
-        key_input.press("s")
+def lift_right(key):
+    # 向下收
+    for i in range(22):
+        key_input.press(key)
         sleep(0.3)
-        key_input.release("s")
+        key_input.release(key)
         sleep(0.1)
         key_input.press("a")
         sleep(0.1)
@@ -28,38 +29,23 @@ def on_press():
         sleep(0.1)
         key_input.release("1")
         sleep(0.1)
+
+
+def on_press():
+    lift_right("s")
     # 向下收完之后
     key_input.press("s")
     sleep(0.3)
     key_input.release("s")
     sleep(0.1)
-    for i in range(21):
-        key_input.press("d")
-        sleep(0.3)
-        key_input.release("d")
-        sleep(0.1)
     # 右到头
     for i in range(21):
-        key_input.press("w")
-        sleep(0.3)
-        key_input.release("w")
-        sleep(0.1)
-        key_input.press("a")
-        sleep(0.1)
-        key_input.release("a")
-        sleep(0.1)
-        key_input.press("1")
-        sleep(0.1)
-        key_input.release("1")
-        sleep(0.1)
         key_input.press("d")
-        sleep(0.1)
+        sleep(0.3)
         key_input.release("d")
         sleep(0.1)
-        key_input.press("1")
-        sleep(0.1)
-        key_input.release("1")
-        sleep(0.1)
+    # 向上收
+    lift_right("w")
     # 向上收完之后
     key_input.press("w")
     sleep(0.3)
@@ -133,6 +119,22 @@ def on_release(key):
         return False
 
 
+def add_one():
+    for i in range(30):
+        key_input.press("w")
+        sleep(0.1)
+        key_input.release("w")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+
+
 temp = 1
 while temp:
     with keyboard.Events() as events:
@@ -140,9 +142,15 @@ while temp:
             if event.key == keyboard.KeyCode.from_char('-'):
                 print("hh")
                 on_press()
+                break
+            if event.key == keyboard.KeyCode.from_char('0'):
+                print("hh")
+                add_one()
+                break
             if event.key == keyboard.KeyCode.from_char('='):
                 print("结束")
                 temp = 0
                 on_press()
+                break
             else:
                 print('Received event {}'.format(event))
