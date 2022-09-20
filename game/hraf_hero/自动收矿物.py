@@ -44,6 +44,23 @@ def on_press():
         sleep(0.3)
         key_input.release("d")
         sleep(0.1)
+        key_input.press("w")
+        sleep(0.1)
+        key_input.release("w")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+        key_input.press("s")
+        sleep(0.1)
+        key_input.release("s")
+        sleep(0.1)
+        key_input.press("1")
+        sleep(0.1)
+        key_input.release("1")
+        sleep(0.1)
+
     # 向上收
     lift_right("w")
     # 向上收完之后
@@ -67,48 +84,6 @@ def on_press():
     sleep(0.3)
     key_input.release("a")
     sleep(0.1)
-    # 开始加油
-    for i in range(30):
-        key_input.press("d")
-        sleep(0.3)
-        key_input.release("d")
-        sleep(0.1)
-        key_input.press("w")
-        sleep(0.1)
-        key_input.release("w")
-        sleep(0.1)
-        key_input.press("1")
-        sleep(0.1)
-        key_input.release("1")
-        sleep(0.1)
-        key_input.press("1")
-        sleep(0.1)
-        key_input.release("1")
-        sleep(0.1)
-    # 加完油之后
-    key_input.press("d")
-    sleep(0.3)
-    key_input.release("d")
-    sleep(0.1)
-    for i in range(3):
-        key_input.press("w")
-        sleep(0.3)
-        key_input.release("w")
-        sleep(0.1)
-    # 开始收矿
-    for i in range(30):
-        key_input.press("a")
-        sleep(0.3)
-        key_input.release("a")
-        sleep(0.1)
-        key_input.press("s")
-        sleep(0.1)
-        key_input.release("s")
-        sleep(0.1)
-        key_input.press("1")
-        sleep(0.1)
-        key_input.release("1")
-        sleep(0.1)
 
 
 def on_release(key):
@@ -120,19 +95,19 @@ def on_release(key):
 
 
 def add_one():
-    for i in range(30):
+    for i in range(100):
         key_input.press("w")
-        sleep(0.1)
+        sleep(0.05)
         key_input.release("w")
-        sleep(0.1)
+        sleep(0.05)
         key_input.press("1")
-        sleep(0.1)
+        sleep(0.05)
         key_input.release("1")
-        sleep(0.1)
+        sleep(0.05)
         key_input.press("1")
-        sleep(0.1)
+        sleep(0.05)
         key_input.release("1")
-        sleep(0.1)
+        sleep(0.05)
 
 
 temp = 1
@@ -143,7 +118,7 @@ while temp:
                 print("hh")
                 on_press()
                 break
-            if event.key == keyboard.KeyCode.from_char('0'):
+            if event.key == keyboard.KeyCode.from_char('+'):
                 print("hh")
                 add_one()
                 break
