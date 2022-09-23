@@ -1,9 +1,26 @@
-import matplotlib.pyplot as plt
+from pynput.mouse import Button, Controller
 
-x = ["A", "B", "C", "D", "E", "F", "G", "H"]
-y = [50, 85.2, 65.2, 85, 45, 120, 51, 100]
+mouse = Controller()
 
-fig, ax = plt.subplots(figsize=(10, 7))
-ax.bar(x=x, height=y, width=0.6, align="center", color="grey", edgecolor="red", linewidth=2.0)
-ax.set_title("Adjust Styles of plot", fontsize=15)
-plt.show()
+# Read pointer position
+print('The current pointer position is {0}'.format(
+    mouse.position))
+
+# Set pointer position
+mouse.position = (10, 20)
+print('Now we have moved it to {0}'.format(
+    mouse.position))
+
+# Move pointer relative to current position
+mouse.move(5, -5)
+
+# Press and release
+mouse.press(Button.left)
+mouse.release(Button.left)
+
+# Double click; this is different from pressing and releasing
+# twice on macOS
+mouse.click(Button.left, 2)
+
+# Scroll two steps down
+mouse.scroll(0, 2)

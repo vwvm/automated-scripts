@@ -1,12 +1,16 @@
-import configparser
-import time
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, thread
-from time import sleep
-import os
-import threading
+from __future__ import print_function
 
+import configparser
+import ctypes
+import os
+import sys
+import threading
+from time import sleep
+
+from numpy.compat import unicode
 from pynput import keyboard
 from pynput import mouse
+from pynput.mouse import Button
 
 key_input = keyboard.Controller()
 mouse_input = mouse.Controller()
@@ -44,6 +48,12 @@ def script_start(running, this_dict):
 
 
 def mouse_press(running, this_dict):
+    """
+    鼠标拿包
+    @param running:
+    @param this_dict:
+    @return:
+    """
     if not running.is_set():
         return
     sleep(1)
@@ -128,9 +138,17 @@ def explain(is_down=1, shutdown=0):
         os.system("shutdown /s /t " + str(shutdown))
 
 
+def scum_start_and_stop():
+    os.system("")
+
+
 def key_event(this_dict):
+    """
+    控制脚本启动和关闭
+    @param this_dict:配置函数
+    """
     with keyboard.Events() as events:
-        print("按'-'启动脚本")
+        print("请按下-启动脚本")
         p = Main()
         p.this_dict = this_dict
         is_right = 0
@@ -158,18 +176,25 @@ def key_event(this_dict):
 
 
 def read_config():
+    """
+    读取配置文件
+    @return: 配置文件列表
+    """
     #  实例化configParser对象
     config = configparser.ConfigParser()
     # -read读取ini文件
     config.read('config.ini', encoding='UTF-8')
-    config_str = ['count', "move_up", "move_down", "休息几秒", "eat", "water", "x", "y", "sum", "shutdown", "is"]
-
+    config_str = ['count', "move_up", "move_down", "休息几秒",
+                  "eat", "water", "x", "y", "sum", "shutdown",
+                  "is"]
     config_dict = {i: int(config.get('move_config', i)) for i in config_str}
     return config_dict
 
 
-if __name__ == '__main__':
+def script_entrance_exercise():
     this_dict = read_config()
+    # 输出配置文件
+    print("配置文件如下")
     print(this_dict)
     explain(this_dict.get("is"), this_dict.get("shutdown"))
     key_event(this_dict)
@@ -180,3 +205,44 @@ if __name__ == '__main__':
             break
         if p == 'y':
             key_event(this_dict)
+
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
+def is_start():
+    if is_admin():
+        # 将要运行的代码加到这里
+        SCUMpath = r'"F:\Program Files (x86)\Steam\steamapps\common\SCUM\SCUM_Launcher.exe"'
+        os.system(SCUMpath)
+        sleep(100)
+        os.system("taskkill /F /IM SCUM.exe")
+    else:
+        if sys.version_info[0] == 3:
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        else:  # in python2.x
+            ctypes.windll.shell32.ShellExecuteW(None, u"runas", unicode(sys.executable), unicode(__file__), None, 1)
+
+
+from mouse_move_test import mouse_move_test
+from mouse_test import mouse_test
+from script_entrance_start_and_stop import script_entrance_start_and_stop
+
+if __name__ == '__main__':
+    print("1 启动锻炼脚本")
+    print("2 启动进退程序脚本")
+    print("3 启动获取鼠标位置脚本")
+    print("4 启动鼠标测试脚本")
+    select_type = int(input("请选择："))
+    if select_type == 1:
+        script_entrance_exercise()
+    if select_type == 2:
+        script_entrance_start_and_stop()
+    if select_type == 3:
+        mouse_test()
+    if select_type == 4:
+        mouse_move_test()
