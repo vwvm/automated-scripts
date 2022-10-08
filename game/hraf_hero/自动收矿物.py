@@ -1,13 +1,13 @@
 from time import sleep
 
-from pynput import mouse, keyboard
-from pynput.keyboard import Controller, Key
+from pynput import keyboard
+from pynput.keyboard import Controller
 
 key_input = Controller()
 
 
 def lift_right(key):
-    # 向下收
+    # 上下移动收获
     for i in range(22):
         key_input.press(key)
         sleep(0.3)
@@ -31,18 +31,12 @@ def lift_right(key):
         sleep(0.1)
 
 
-def on_press():
-    lift_right("s")
-    # 向下收完之后
-    key_input.press("s")
-    sleep(0.3)
-    key_input.release("s")
-    sleep(0.1)
-    # 右到头
-    for i in range(21):
-        key_input.press("d")
+def up_down(key):
+    # 左右移动收获
+    for i in range(20):
+        key_input.press(key)
         sleep(0.3)
-        key_input.release("d")
+        key_input.release(key)
         sleep(0.1)
         key_input.press("w")
         sleep(0.1)
@@ -61,6 +55,35 @@ def on_press():
         key_input.release("1")
         sleep(0.1)
 
+
+def on_press():
+    lift_right("s")
+    # 向下收完之后
+    key_input.press("s")
+    sleep(0.3)
+    key_input.release("s")
+    sleep(0.1)
+    # 向右
+    up_down("d")
+    for i in range(6):
+        key_input.press("s")
+        sleep(0.3)
+        key_input.release("s")
+        sleep(0.1)
+    # 向左
+    up_down("a")
+    for i in range(6):
+        key_input.press("s")
+        sleep(0.3)
+        key_input.release("s")
+        sleep(0.1)
+    # 向右
+    up_down("d")
+    for i in range(12):
+        key_input.press("w")
+        sleep(0.3)
+        key_input.release("w")
+        sleep(0.1)
     # 向上收
     lift_right("w")
     # 向上收完之后
@@ -95,7 +118,7 @@ def on_release(key):
 
 
 def add_one():
-    for i in range(100):
+    for i in range(500):
         key_input.press("w")
         sleep(0.05)
         key_input.release("w")
