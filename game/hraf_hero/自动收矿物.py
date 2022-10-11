@@ -65,6 +65,10 @@ def on_press():
     sleep(0.1)
     # 向右
     up_down("d")
+    key_input.press("d")
+    sleep(0.3)
+    key_input.release("d")
+    sleep(0.1)
     for i in range(6):
         key_input.press("s")
         sleep(0.3)
@@ -72,6 +76,10 @@ def on_press():
         sleep(0.1)
     # 向左
     up_down("a")
+    key_input.press("a")
+    sleep(0.3)
+    key_input.release("a")
+    sleep(0.1)
     for i in range(6):
         key_input.press("s")
         sleep(0.3)
@@ -79,6 +87,10 @@ def on_press():
         sleep(0.1)
     # 向右
     up_down("d")
+    key_input.press("d")
+    sleep(0.3)
+    key_input.release("d")
+    sleep(0.1)
     for i in range(12):
         key_input.press("w")
         sleep(0.3)
