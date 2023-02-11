@@ -12,6 +12,7 @@ if __name__ == '__main__':
     print("4 启动鼠标测试脚本")
     print("5 启动抽奖脚本")
     print("6 启动关机任务脚本")
+
     select_type = int(input("请选择："))
     if select_type == 1:
         script_entrance_exercise()

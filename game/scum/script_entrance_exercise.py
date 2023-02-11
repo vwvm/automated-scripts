@@ -43,7 +43,7 @@ def script_start(running, this_dict):
         sleep(0.3)
         key_input.release("c")
         sleep(0.1)
-    feed(running, this_dict)
+    # feed(running, this_dict)
 
 
 def mouse_press(running, this_dict):
@@ -101,7 +101,7 @@ def feed(running, this_dict):
     sleep(9)
     if not running.is_set():
         return
-    mouse_press(running, this_dict)
+    # mouse_press(running, this_dict)
 
 
 class Main(threading.Thread):
@@ -117,7 +117,7 @@ class Main(threading.Thread):
     def run(self):
         while self.__running.isSet():
             self.__flag.wait()  # 为True时立即返回, 为False时阻塞直到内部的标识位为True后返回
-            script_start(self.__running, this_dict)
+            script_start(self.__running, self.this_dict)
 
     def pause(self):
         self.__flag.clear()  # 设置为False, 让线程阻塞

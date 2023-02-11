@@ -19,7 +19,7 @@ def script_entrance_lottery():
                "Accept-Encoding": 'gzip, deflate',
                "Accept-Language": 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
                "Connection": 'keep-alive',
-               "Cookie": cookie,
+               # "Cookie": cookie,
                "DNT": '1',
                "Host": '003.cnscum.com:5997',
                "Referer": "http://003.cnscum.com:5997/rotate",
